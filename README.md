@@ -12,3 +12,7 @@ Vite构建Vue3+TS+ElementPlus+Pinia+Echarts简易模板，使用Json-server模�
 2. 运行：yarn dev
 3. 运行mock: yarn mock
 4. 启动：http://localhost:3000
+
+## 项目运行
+1. 项目运行：http://localhost:3000
+2. mock运行：http://localhost:3100
