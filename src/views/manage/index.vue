@@ -1,6 +1,13 @@
 <template>
+  <div class="title">表格</div>
   <div class="flex-box">
-    <div class="title">表格</div>
+    <el-select v-model="selectTime" clearable placeholder="Time" @change="handleSearch">
+      <el-option
+        v-for="item in options"
+        :key="item"
+        :label="item"
+        :value="item"/>
+    </el-select>
     <el-button type="primary" @click="handleAdd">新增</el-button>
   </div>
   <el-table :data="dataList">
@@ -46,13 +53,13 @@ import { postData } from "@/types/request";
 import { PostItem } from "@/types/response";
 
 import { getChanged, updateRecord } from "@/utils/index";
-
+  let selectTime = ref('')
   const dialogVisible = ref(false)
   let dialogTitle = ref("新增数据")
-
+  const options = ['唐','宋']
   const dataList = ref<PostItem[]>([])
-  function getData() {
-    getPosts().then((res: any) => {
+  function getData(val?: string) {
+    getPosts({time: val}).then((res: any) => {
       if(res.status == 200){
         dataList.value = res.data
       }
@@ -63,6 +70,16 @@ import { getChanged, updateRecord } from "@/utils/index";
     getData()
   })
 
+  const handleSearch = (val: string) => {
+    selectTime.value = val
+    if (val) {
+      getData(selectTime.value)
+    }else{
+      getData()
+    }
+    
+  }
+  
   let prevRow = {} as any
 
   const ruleFormRef = ref<FormInstance>()
@@ -241,5 +258,6 @@ import { getChanged, updateRecord } from "@/utils/index";
 .flex-box{
   display: flex;
   justify-content: space-between;
+  margin: 10px 0;
 }
 </style>

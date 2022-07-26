@@ -33,7 +33,7 @@ interface RecordItem {
   name: string
   content: string
   type: string
-  icon?: HTMLElement
+  icon: object
   color: string
 }
 
@@ -44,6 +44,7 @@ function getDate() {
     if(res.status == 200){
       res.data.map((item: RecordItem)=>{
         if(item.type == 'add'){
+          // console.log(typeof Plus,'什么类型，返回object')
           item.icon = Plus
           item.color = "#07d66d"
         }else if(item.type == 'remove'){

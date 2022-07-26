@@ -228,7 +228,6 @@ const lastOption = reactive({
       realtimeSort: true,
       name: "发展",
       type: "bar",
-      // barWidth: 20,
       data: data,
       label: {
         show: true,
@@ -274,7 +273,7 @@ function updateYear(year: number, lastChart: echarts.ECharts) {
   lastOption.series[0].data = data;
   lastOption.graphic.elements[0].style.text = year;
 
-  lastChart.setOption(lastOption);
+  lastChart.setOption(lastOption as echarts.EChartsOption);
 }
 
 function setLastChart(lastChart: echarts.ECharts) {

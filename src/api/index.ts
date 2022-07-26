@@ -1,10 +1,9 @@
 import { useUserStore } from "@/store";
-import { loginParams, postData, UpdateParams } from "@/types/request";
+import { loginParams, postData, PostQuery, UpdateParams } from "@/types/request";
 import { UserState } from "@/types/store";
 import request from "@/utils/request";
 
 export function login(params: loginParams) {
-  console.log(params,'有吗')
   return request({
     url: '/users?name='+ params.name,
     method: 'get',
@@ -12,10 +11,11 @@ export function login(params: loginParams) {
   })
 }
 
-export function getPosts() {
+export function getPosts(query: PostQuery) {
   return request({
     url: '/posts',
-    method: 'get'
+    method: 'get',
+    params: query
   })
 }
 
@@ -27,7 +27,7 @@ export function postPosts(data: postData) {
   })
 }
 
-export function putPosts(data: postData, id: number|undefined) {
+export function putPosts(data: postData, id?: number) {
   return request({
     url: '/posts/' + id,
     method: 'put',
@@ -35,7 +35,7 @@ export function putPosts(data: postData, id: number|undefined) {
   })
 }
 
-export function deletePosts(id: number|undefined) {
+export function deletePosts(id?: number) {
   return request({
     url: '/posts/' + id,
     method: 'delete',
@@ -77,7 +77,7 @@ export function getUser(id: number) {
   })
 }
 
-export function putUser(data: UserState, id: number|undefined) {
+export function putUser(data: UserState, id?: number) {
   return request({
     url: '/userInfo/' + id,
     method: 'put',
@@ -91,7 +91,6 @@ export function getUpdateRecord() {
     method: 'get'
   })
 }
-
 
 export function postUpdateRecord(query: UpdateParams) {
   const y = new Date().getFullYear()

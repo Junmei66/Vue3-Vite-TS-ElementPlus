@@ -4,7 +4,7 @@ import { UpdateParams } from "@/types/request"
 // 新增更新记录
 export function updateRecord(params: UpdateParams){
   const result = postUpdateRecord(params)
-  console.log(result, "更新日志结果")
+  // console.log(result, "更新日志结果")
   return result
 }
 
@@ -69,7 +69,6 @@ export function getChanged(prevObj: _typeObj = {}, newObj: _typeObj = {}) {
       console.log(prevObj[k], newObj[k],'数组或对象')
       for(let k2 in prevObj[k]){
         if(prevObj[k][k2] && newObj[k][k2] && prevObj[k][k2] != newObj[k][k2]){
-          console.log(prevObj[k][k2], k, "有值的吧")
           count += 1
         }
       }
@@ -79,6 +78,6 @@ export function getChanged(prevObj: _typeObj = {}, newObj: _typeObj = {}) {
       }
     }
   }
-  console.log(keyArr,result, '为啥没有值了')
+  // console.log(keyArr,result, '为啥没有值了')
   return {keyArr, result}
 }
