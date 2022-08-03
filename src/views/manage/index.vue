@@ -12,10 +12,10 @@
   </div>
   <el-table :data="dataList">
     <el-table-column type="index" label="Index" width="70" fixed />
-    <el-table-column prop="time" label="Time" min-width="100" />
+    <el-table-column prop="time" label="Time" width="80" />
     <el-table-column prop="author" label="Author" min-width="100" />
     <el-table-column prop="title" label="Title" min-width="100" show-overflow-tooltip />
-    <el-table-column prop="description" label="Description" min-width="100" show-overflow-tooltip />
+    <el-table-column prop="description" label="Description" min-width="200" show-overflow-tooltip />
     <el-table-column label="Edit" width="140" fixed="right">
       <template #default="scope">
         <el-button size="small" type="success" @click="handleEdit(scope.row)">编辑</el-button>
