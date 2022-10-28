@@ -20,7 +20,3 @@ export interface UpdateParams {
   content: string;
   type: string;
 }
-
-export interface PostQuery {
-  time?: string[] | string
-}

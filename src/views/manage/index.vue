@@ -1,21 +1,14 @@
 <template>
-  <div class="title">表格</div>
   <div class="flex-box">
-    <el-select v-model="selectTime" clearable placeholder="Time" @change="handleSearch">
-      <el-option
-        v-for="item in options"
-        :key="item"
-        :label="item"
-        :value="item"/>
-    </el-select>
+    <div class="title">表格</div>
     <el-button type="primary" @click="handleAdd">新增</el-button>
   </div>
   <el-table :data="dataList">
     <el-table-column type="index" label="Index" width="70" fixed />
-    <el-table-column prop="time" label="Time" width="80" />
+    <el-table-column prop="time" label="Time" min-width="100" />
     <el-table-column prop="author" label="Author" min-width="100" />
     <el-table-column prop="title" label="Title" min-width="100" show-overflow-tooltip />
-    <el-table-column prop="description" label="Description" min-width="200" show-overflow-tooltip />
+    <el-table-column prop="description" label="Description" min-width="100" show-overflow-tooltip />
     <el-table-column label="Edit" width="140" fixed="right">
       <template #default="scope">
         <el-button size="small" type="success" @click="handleEdit(scope.row)">编辑</el-button>
@@ -53,13 +46,13 @@ import { postData } from "@/types/request";
 import { PostItem } from "@/types/response";
 
 import { getChanged, updateRecord } from "@/utils/index";
-  let selectTime = ref('')
+
   const dialogVisible = ref(false)
   let dialogTitle = ref("新增数据")
-  const options = ['唐','宋']
+
   const dataList = ref<PostItem[]>([])
-  function getData(val?: string) {
-    getPosts({time: val}).then((res: any) => {
+  function getData() {
+    getPosts().then((res: any) => {
       if(res.status == 200){
         dataList.value = res.data
       }
@@ -70,16 +63,6 @@ import { getChanged, updateRecord } from "@/utils/index";
     getData()
   })
 
-  const handleSearch = (val: string) => {
-    selectTime.value = val
-    if (val) {
-      getData(selectTime.value)
-    }else{
-      getData()
-    }
-    
-  }
-  
   let prevRow = {} as any
 
   const ruleFormRef = ref<FormInstance>()
@@ -258,6 +241,5 @@ import { getChanged, updateRecord } from "@/utils/index";
 .flex-box{
   display: flex;
   justify-content: space-between;
-  margin: 10px 0;
 }
 </style>

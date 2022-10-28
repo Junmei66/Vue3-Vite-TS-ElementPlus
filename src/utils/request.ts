@@ -1,10 +1,9 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { ElMessage } from "element-plus";
 
-
+const baseURL = import.meta.env.VITE_BASE_API
 const service = axios.create({
-  // baseURL: 'http://localhost:3100',
-  baseURL: 'http://localhost:3100',
+  baseURL: baseURL,
   timeout: 5000,
   headers: {
     authorization: ""

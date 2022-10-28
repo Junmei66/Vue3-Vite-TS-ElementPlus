@@ -126,7 +126,7 @@ const iconStyle = computed(() => {
 const tag = ref("")
 
 
-let userData = ref<UserState | {}>({})
+let userData = ref({})
 
 const formData = reactive({
   id: 0,
@@ -203,7 +203,7 @@ const onSubmit = async (formEl: FormInstance | undefined) => {
       if(keyArr?.length){
         let contStr = "将用户信息的"
         for(let k = 0; k < keyArr.length; k++){
-          contStr += keyArr[k] + "由" + userData.value[keyArr[k] as keyof typeof userData.value] + "修改为" + formData[keyArr[k] as keyof typeof userData.value]
+          contStr += keyArr[k] + "由" + userData.value[keyArr[k]] + "修改为" + formData[keyArr[k]]
           if(k == keyArr.length){
             contStr += "。"
           }else{

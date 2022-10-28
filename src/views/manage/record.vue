@@ -14,7 +14,6 @@
           <div class="name">{{ activity.name }}</div>
           <div class="org">{{activity.author}}</div>
         </div>
-
         <div>{{ activity.content }}</div>
       </el-card>
     </el-timeline-item>
@@ -25,7 +24,7 @@
 import { getUpdateRecord } from '@/api'
 import { Plus, SemiSelect, Edit, Delete, User } from '@element-plus/icons-vue'
 
-import { onMounted, ref } from 'vue'
+import { markRaw, onMounted, ref } from 'vue'
 
 interface RecordItem {
   id: number
@@ -33,31 +32,31 @@ interface RecordItem {
   name: string
   content: string
   type: string
-  icon: object
+  icon?: any
   color: string
 }
 
-const activities = ref<RecordItem[]>([])
+const mIcon = markRaw(Plus)
+const activities = ref<RecordItem[]>()
 
 function getDate() {
   getUpdateRecord().then(res=>{
     if(res.status == 200){
       res.data.map((item: RecordItem)=>{
         if(item.type == 'add'){
-          // console.log(typeof Plus,'什么类型，返回object')
-          item.icon = Plus
+          item.icon = markRaw(Plus)
           item.color = "#07d66d"
         }else if(item.type == 'remove'){
-          item.icon = SemiSelect
+          item.icon = markRaw(SemiSelect)
           item.color = "#c6f887"
         } else if(item.type == 'edit'){
-          item.icon = Edit
+          item.icon = markRaw(Edit)
           item.color = "#04f7e5"
         } else if(item.type == 'delete'){
-          item.icon = Delete
+          item.icon = markRaw(Delete)
           item.color = "#f44336"
         }else{
-          item.icon = User
+          item.icon = markRaw(User)
           item.color = "#13bbf8"
         }
       })

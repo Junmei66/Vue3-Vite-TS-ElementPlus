@@ -45,6 +45,7 @@ import { getSkills, getCapability, getProjects, getUis } from "@/api/index";
 
 import * as echarts from "echarts";
 import { skillItem } from "@/types/response";
+import { throttle } from "@/utils";
 const colors = ["#42b983","#01b9ef","#dd0031","#2183c8","#6950a3","#d93b95","#ee5a73","#f47122","#fdf200","#fedc00","#bad875","#4db657","#67c18f","#02a890"]
 const colColors = [
   "#42b983",
@@ -228,6 +229,7 @@ const lastOption = reactive({
       realtimeSort: true,
       name: "发展",
       type: "bar",
+      // barWidth: 20,
       data: data,
       label: {
         show: true,
@@ -273,7 +275,7 @@ function updateYear(year: number, lastChart: echarts.ECharts) {
   lastOption.series[0].data = data;
   lastOption.graphic.elements[0].style.text = year;
 
-  lastChart.setOption(lastOption as echarts.EChartsOption);
+  lastChart.setOption(lastOption);
 }
 
 function setLastChart(lastChart: echarts.ECharts) {
@@ -285,9 +287,6 @@ function setLastChart(lastChart: echarts.ECharts) {
     })(i);
   }
 }
-onBeforeUnmount(() => {
-  clearTimeout();
-});
 
 function getData(
   lineChart: echarts.ECharts,
@@ -368,13 +367,20 @@ onMounted(() => {
   getData(lineChart, pieChart, radarChart);
   setLastChart(lastChart);
 
-  window.addEventListener("resize", () => {
-    lineChart.resize();
-    pieChart.resize();
-    radarChart.resize();
-    lastChart.resize();
-  });
-});
+  window.onresize=throttle(() => {
+      lineChart.resize();
+      pieChart.resize();
+      radarChart.resize();
+      lastChart.resize();
+  },500)
+  
+  window.addEventListener("resize", throttle(() => {
+      lineChart.resize();
+      pieChart.resize();
+      radarChart.resize();
+      lastChart.resize();
+  },500))
+})
 
 </script>
 

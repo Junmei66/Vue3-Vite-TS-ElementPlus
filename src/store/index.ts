@@ -1,6 +1,7 @@
 import { getUser, login } from "@/api";
 import { loginParams } from "@/types/request";
 import { UserState } from "@/types/store";
+import { getUserId, setUserId } from "@/utils/auth";
 import { createPinia, defineStore } from "pinia";
 import { useRouter } from "vue-router";
 
@@ -8,12 +9,12 @@ const pinia = createPinia()
 
 export const useUserStore = defineStore("user",{
   state: (): UserState => ({
-      id: 1,
-      name: "mm",
-      sex: "女",
-      age: 20,
-      tel: "15500000000",
-      address: "深圳",
+      id: getUserId(),
+      name: "",
+      sex: "",
+      age: 0,
+      tel: "",
+      address: "",
       tags: [],
       roles: []
   }),
@@ -43,22 +44,24 @@ export const useUserStore = defineStore("user",{
       const userId = Number(localStorage.getItem('userId'))
       if(userId){
         const result = await getUser(userId)
-        if(result.data?.length){
+        if(result.data!.length){
           const userInfo = result.data[0]
+          this.roles = userInfo.roles
+          this.name = userInfo.name
           this.setInfo(userInfo)
           return userInfo
         }
       }else{
         const router = useRouter()
         this.handleLogout()
-        router?.push({path: '/login'})
+        router!.push({path: '/login'})
       }
     },
     async handleLogin(loginForm: loginParams){
       const result = await login(loginForm)
       if(result.status == 200){
-        // console.log(result.data, 'result.data')
-        localStorage.setItem('userId', result.data[0].id)
+        this.id = result.data[0].id
+        setUserId(result.data[0].id)
         this.getInfo()
       }
       return result
@@ -71,19 +74,6 @@ export const useUserStore = defineStore("user",{
   }
 })
 
-export const useSidebarStore = defineStore("sidebar",{
-  state: () => {
-    return {
-      collapse: false
-    }
-  },
-  getters: {},
-  actions: {
-    handleCollapse(){
-      this.collapse = !this.collapse
-    }
-  }
-})
 
 export default pinia
 

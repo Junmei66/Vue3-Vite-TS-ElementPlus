@@ -1,14 +1,14 @@
 <template>
   <el-menu
-    :default-active="activeMenu"
+    :default-active="activeRoute"
     mode="horizontal"
     class="el-menu-demo"
     background-color="#545c64"
     text-color="#fff"
     active-text-color="#ffd04b"
+    :router="true"
   >
   <template v-for="(item, k) in showRoutes" :key="k">
-    <!-- <el-sub-menu v-if="item.children?.length>1" :index="(k + 1).toString()"> -->
     <el-sub-menu v-if="item.children?.length>1" :index="item.redirect? item.redirect:item.path">
       <template #title>
         <el-icon>
@@ -23,7 +23,6 @@
           <router-link :to="row.redirect? row.redirect:row.path">{{ row.meta.title }}</router-link>
       </el-menu-item>
     </el-sub-menu>
-    <!-- <el-menu-item v-else :index="(k + 1).toString()"> -->
     <el-menu-item v-else :index="item.redirect? item.redirect:item.path">
       <router-link :to="item.path">
         <el-icon>
@@ -38,31 +37,23 @@
 
 <script lang="ts">
 import { useUserStore } from "@/store";
-import { defineComponent, ref } from "vue";
-import { useRouter } from "vue-router";
+import { computed, defineComponent, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { routes } from "../../router";
 export default defineComponent({
   name: "SideBar",
   setup: () => {
-    const router = useRouter();
-    // console.log(router, "router");
-    const curRt = router.currentRoute.value
-    const activeRoute = ref(curRt);
-    const activeMenu = ref(curRt.path);
-
-    // console.log(curRt,activeMenu, "activeRoute");
+    const route = useRoute();
     const userStore = useUserStore()
-    const showRoutes = routes.filter((route: any)=>{
-      // console.log(route,'route')
+
+    const showRoutes = computed(()=> routes.filter((route: any)=>{
         if(route.meta?.hidden){
           return false
         }else{
           if(route.meta?.roles){
-              const {roles} = userStore.userProfile
-              console.log(roles,'有吗')
-              debugger
+              const roles = userStore.roles
               route.meta?.roles.filter((item: string) => {
-                if(roles.includes(item)){
+                if(roles!.includes(item)){
                   return true
                 }else{
                   return false
@@ -73,9 +64,11 @@ export default defineComponent({
           }
         }
       })
-    
-    console.log(showRoutes,'showRoutes')
-    return { showRoutes, activeRoute, activeMenu };
+    )
+    const activeRoute = computed(()=>{
+      return route.path
+    })
+    return { showRoutes, activeRoute };
   },
 });
 </script>

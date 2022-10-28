@@ -40,7 +40,7 @@ const rules = reactive<FormRules>({
 
 const router = useRouter()
 
- const userStore = useUserStore()
+const userStore = useUserStore()
 
 const onSubmit = async (formEl: FormInstance | undefined) => {
     if(!formEl) return
